@@ -4,4 +4,4 @@ export const filmsListTemplate = () => (
       <div class="films-list__container"></div>
   </section>
   `
-)
+);

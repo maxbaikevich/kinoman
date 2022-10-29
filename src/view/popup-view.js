@@ -99,4 +99,4 @@ export const popUpContainerRenderTemplate = () => (
       </div>
     </form>
   </section>`
-)
+);
