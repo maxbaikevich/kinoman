@@ -15,13 +15,22 @@ import {popUpContainerRenderTemplate} from './view/popup-view';
 import {popUpDetailsCreateTemplate} from './view/pop-up-details-view';
 import {createPopUpDetailsControlsTemplate} from './view/pop-up-details-controls-view';
 import {createPopUpDetailsControlsBtnTemplate} from './view/pop-up-details-controls-btn';
+import {createPopUpDetailsBottomContainerTemplate} from './view/pop-up-details-bottom-container-view';
+import {createPopUpDetailsCommentListTemplate} from './view/pop-up-details-comments-list-view';
+import {createNewCommentTemplate} from './view/pop-up-detail-new-comment-view';
+import {createEmojiListTemplate} from './view/pop-up-details-emoji-list-view';
+import {createPopUpFilmDetailsCommentItemTemplate} from './view/pop-up-details-comment-view';
+import {createCommentEmojiTemplate} from './view/pop-up-details-comment-emoji-view';
+
 const detailsControlButton = [
   {styleClass:'film-details__control-button--watchlist',title: 'Add to watchlist', id:'watchlist', name: 'watchlist', active: false},
   {styleClass:'film-details__control-button--watched', title:'Already watched', id:'watched', name: 'watched', active: true},
   {styleClass:'film-details__control-button--favorite', title:'Add to favorites', id:'favorite', name: 'favorite', active: false}
 ];
+const commentEmoji = ['smile','sleeping','puke','angry'];
 const countFilmsCard = 5;
 const countExtra = 2;
+const countComments = 4;
 const siteHeaderElement = document.querySelector('.header');
 renderTemplate(siteHeaderElement, createAvatarTemplate(), RenderPosition.BEFOREEND);
 const siteMeinElement = document.querySelector('.main');
@@ -64,4 +73,23 @@ for(let i = 0; i < detailsControlButton.length; i++) {
     active = 'film-details__control-button--active';
   }
   renderTemplate(filmDetailsControls, createPopUpDetailsControlsBtnTemplate(detailsControlButton[i], active), RenderPosition.BEFOREEND);
+}
+const detailsInnerContainer = bodyElement.querySelector('.film-details__inner');
+
+renderTemplate(detailsInnerContainer, createPopUpDetailsBottomContainerTemplate(), RenderPosition.BEFOREEND);
+
+const commentsWrap  = detailsInnerContainer.querySelector('.film-details__comments-wrap');
+
+renderTemplate(commentsWrap, createPopUpDetailsCommentListTemplate(), RenderPosition.BEFOREEND);
+const commentsList = commentsWrap.querySelector('.film-details__comments-list');
+for(let i=0; i < countComments; i++) {
+  renderTemplate(commentsList,createPopUpFilmDetailsCommentItemTemplate(), RenderPosition.BEFOREEND);
+}
+renderTemplate(commentsWrap, createNewCommentTemplate(), RenderPosition.BEFOREEND);
+const filmDetailsNewComment = commentsWrap.querySelector('.film-details__new-comment');
+renderTemplate(filmDetailsNewComment, createEmojiListTemplate(), RenderPosition.BEFOREEND);
+
+const emojiList = filmDetailsNewComment.querySelector('.film-details__emoji-list');
+for(let i = 0; i < commentEmoji.length; i++) {
+  renderTemplate(emojiList, createCommentEmojiTemplate(commentEmoji[i]), RenderPosition.BEFOREEND);
 }
