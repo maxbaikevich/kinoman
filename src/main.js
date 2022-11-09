@@ -94,7 +94,7 @@ renderTemplate(footer, footerStatisticTemplate(), RenderPosition.BEFOREEND);
 const bodyElement = document.querySelector('body');
 renderTemplate(bodyElement, popUpContainerRenderTemplate(), RenderPosition.BEFOREEND);
 const detailsTopContainer = bodyElement.querySelector('.film-details__top-container');
-renderTemplate(detailsTopContainer, popUpDetailsCreateTemplate(), RenderPosition.BEFOREEND);
+renderTemplate(detailsTopContainer, popUpDetailsCreateTemplate(movie[0]), RenderPosition.BEFOREEND);
 renderTemplate(detailsTopContainer, createPopUpDetailsControlsTemplate(), RenderPosition.BEFOREEND);
 const filmDetailsControls = document.querySelector('.film-details__controls');
 for(let i = 0; i < detailsControlButton.length; i++) {
