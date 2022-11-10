@@ -1,5 +1,6 @@
 export const popUpDetailsCreateTemplate = (movieData) => {
-  const  {title, poster, description} = movieData.filmInfo;
+  const  {title, poster, description,director} = movieData.filmInfo;
+  console.log(movieData.filmInfo)
   return `<div class="film-details__info-wrap">
       <div class="film-details__poster">
         <img class="film-details__poster-img" src=${poster} alt="">
@@ -22,7 +23,7 @@ export const popUpDetailsCreateTemplate = (movieData) => {
         <table class="film-details__table">
           <tr class="film-details__row">
             <td class="film-details__term">Director</td>
-            <td class="film-details__cell">Anthony Mann</td>
+            <td class="film-details__cell">${director}</td>
           </tr>
           <tr class="film-details__row">
             <td class="film-details__term">Writers</td>
