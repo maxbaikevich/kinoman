@@ -44,7 +44,7 @@ const detailsControlButton = [
 ];
 const commentEmoji = ['smile','sleeping','puke','angry'];
 const countExtra = 2;
-const countComments = 4;
+// const countComments = 4;
 const siteHeaderElement = document.querySelector('.header');
 renderTemplate(siteHeaderElement, createAvatarTemplate(), RenderPosition.BEFOREEND);
 const siteMeinElement = document.querySelector('.main');
@@ -105,15 +105,15 @@ for(let i = 0; i < detailsControlButton.length; i++) {
   renderTemplate(filmDetailsControls, createPopUpDetailsControlsBtnTemplate(detailsControlButton[i], active), RenderPosition.BEFOREEND);
 }
 const detailsInnerContainer = bodyElement.querySelector('.film-details__inner');
-
-renderTemplate(detailsInnerContainer, createPopUpDetailsBottomContainerTemplate(), RenderPosition.BEFOREEND);
+const commentListData = commentsListData(movie[0], comments);
+renderTemplate(detailsInnerContainer, createPopUpDetailsBottomContainerTemplate(commentListData.length), RenderPosition.BEFOREEND);
 
 const commentsWrap  = detailsInnerContainer.querySelector('.film-details__comments-wrap');
-const commentListData = commentsListData(movie[0], comments);
-renderTemplate(commentsWrap, createPopUpDetailsCommentListTemplate(commentListData), RenderPosition.BEFOREEND);
+
+renderTemplate(commentsWrap, createPopUpDetailsCommentListTemplate(), RenderPosition.BEFOREEND);
 const commentsList = commentsWrap.querySelector('.film-details__comments-list');
-for(let i=0; i < countComments; i++) {
-  renderTemplate(commentsList,createPopUpFilmDetailsCommentItemTemplate(), RenderPosition.BEFOREEND);
+for(let i=0; i < commentListData.length; i++) {
+  renderTemplate(commentsList,createPopUpFilmDetailsCommentItemTemplate(commentListData[i]), RenderPosition.BEFOREEND);
 }
 renderTemplate(commentsWrap, createNewCommentTemplate(), RenderPosition.BEFOREEND);
 const filmDetailsNewComment = commentsWrap.querySelector('.film-details__new-comment');
