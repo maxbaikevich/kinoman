@@ -1,11 +1,11 @@
-import {renderTemplate,  RenderPosition} from './render';
-import {createAvatarTemplate} from './view/avatar-view';
-import {createNavigationList} from './view/navigation-list-view';
-import {createNavigationItemsTemplate} from './view/navigation-item-view';
-import {createNavigationItemStat} from './view/navigation-item-stats-view';
-import {sortListTemplate} from './view/sort-list-view';
-import {filmsTemplate} from './view/films-view';
-import {filmsListTemplate} from './view/films-list-view';
+import {renderTemplate, renderElement, RenderPosition} from './render';
+import CreateAvatar from './view/avatar-view';
+import createNavigationListView from './view/navigation-list-view';
+import createNavigationItemsView from './view/navigation-item-view';
+import createNavigationItemStat from './view/navigation-item-stats-view';
+import createSortList from './view/sort-list-view';
+import createFilms from './view/films-view';
+import createFilmsList  from './view/films-list-view';
 import {createFilmCardTemplate} from './view/film-card-view';
 import {showMoreBtnTemplate} from './view/show-more-view';
 import {topRatedTemplate} from './view/top-rated-view';
@@ -24,6 +24,7 @@ import {createCommentEmojiTemplate} from './view/pop-up-details-comment-emoji-vi
 import {generateMovie} from './mock/movie';
 import {createComments} from './utils';
 import {generateFilter} from './utils';
+
 const MOVIE_COUNT = 20;
 const MOVIE_COUNT_PER_STEP = 5;
 const movie = Array.from({length: MOVIE_COUNT}, generateMovie);
@@ -46,26 +47,27 @@ const commentEmoji = ['smile','sleeping','puke','angry'];
 const countExtra = 2;
 // const countComments = 4;
 const siteHeaderElement = document.querySelector('.header');
-renderTemplate(siteHeaderElement, createAvatarTemplate(), RenderPosition.BEFOREEND);
+renderElement(siteHeaderElement, new CreateAvatar().element, RenderPosition.BEFOREEND);
 const siteMeinElement = document.querySelector('.main');
-renderTemplate(siteMeinElement, createNavigationList(), RenderPosition.BEFOREEND);
-const siteNavigationList = siteMeinElement.querySelector('.main-navigation');
-renderTemplate(siteNavigationList, createNavigationItemsTemplate(filterDate), RenderPosition.BEFOREEND);
-renderTemplate(siteNavigationList, createNavigationItemStat(), RenderPosition.BEFOREEND);
-renderTemplate(siteMeinElement, sortListTemplate(), RenderPosition.BEFOREEND);
-renderTemplate(siteMeinElement, filmsTemplate(), RenderPosition.BEFOREEND);
-const siteFilmsContainer = siteMeinElement.querySelector('.films');
-renderTemplate(siteFilmsContainer, filmsListTemplate(), RenderPosition.BEFOREEND);
+const createNavigationListComponent = new createNavigationListView();
+renderElement(siteMeinElement, createNavigationListComponent.element, RenderPosition.BEFOREEND);
+const filmsComponents = new createFilms();
+const filmsListComponents = new createFilmsList();
+renderElement(createNavigationListComponent.element, new createNavigationItemsView(filterDate).element, RenderPosition.BEFOREEND);
+renderElement(createNavigationListComponent.element, new createNavigationItemStat().element, RenderPosition.BEFOREEND);
+renderElement(siteMeinElement, new createSortList().element, RenderPosition.BEFOREEND);
+renderElement(siteMeinElement, filmsComponents.element, RenderPosition.BEFOREEND);
+renderElement(filmsComponents.element, filmsListComponents.element, RenderPosition.BEFOREEND);
 const filmsListContainer  = siteMeinElement.querySelector('.films-list__container');
-
+const siteFilmsContainer = siteMeinElement.querySelector('.films');
 for(let i = 0; i < Math.min(movie.length, MOVIE_COUNT_PER_STEP); i++) {
-  renderTemplate(filmsListContainer, createFilmCardTemplate(movie[i]), RenderPosition.BEFOREEND);
+  renderTemplate(filmsListComponents.element, createFilmCardTemplate(movie[i]), RenderPosition.BEFOREEND);
 }
-const siteFilmList = siteFilmsContainer.querySelector('.films-list');
+// const siteFilmList = siteFilmsContainer.querySelector('.films-list');
 if(movie.length > MOVIE_COUNT_PER_STEP) {
   let renderedMovieCount = MOVIE_COUNT_PER_STEP;
-  renderTemplate(siteFilmList, showMoreBtnTemplate(), RenderPosition.BEFOREEND);
-  const loadMoreButton = siteFilmList.querySelector('.films-list__show-more');
+  renderTemplate(filmsListComponents.element, showMoreBtnTemplate(), RenderPosition.BEFOREEND);
+  const loadMoreButton = filmsListComponents.element.querySelector('.films-list__show-more');
 
   loadMoreButton.addEventListener('click', (evt) => {
     evt.preventDefault();
