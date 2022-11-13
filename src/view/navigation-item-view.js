@@ -1,3 +1,4 @@
+import {createElement} from '../render.js';
 const createNavigationItemTemplate = (filterDate, isChecked) => {
   const {name, count} = filterDate;
   return (
@@ -10,3 +11,27 @@ export const createNavigationItemsTemplate = (navigationData) => {
     .join('');
   return `<div class="main-navigation__items">${navigationItemTemplate}</div>`;
 };
+
+export default  class createNavigationItemsView {
+  #element;
+  #navigationData;
+
+  constructor(navigationData) {
+    this.#navigationData = navigationData;
+  }
+
+  get element () {
+    if(!this.#element) {
+      this.#element = createElement(this.template);
+    }
+    return this.#element;
+  }
+
+  get template () {
+    return createNavigationItemsTemplate(this.#navigationData);
+  }
+
+  removeElement() {
+    this.#element = null;
+  }
+}
