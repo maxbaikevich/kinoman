@@ -1,12 +1,12 @@
 import {createElement} from '../render';
-const createShowMoreBtnTemplate = () => (
-  `<button class="films-list__show-more">Show more</button>
+const createFilmListContainerTemplate = () => (
+  `<div class="films-list__container"></div>
   `
 );
 
-export default class showMoreBtn {
+export default  class filmListContainer {
   #element;
-  get element() {
+  get element () {
     if(!this.#element) {
       this.#element = createElement(this.template);
     }
@@ -14,10 +14,11 @@ export default class showMoreBtn {
   }
 
   get template() {
-    return createShowMoreBtnTemplate();
+    return createFilmListContainerTemplate();
   }
 
   removeElement() {
     this.#element = null;
   }
 }
+

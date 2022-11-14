@@ -6,9 +6,10 @@ import createNavigationItemStat from './view/navigation-item-stats-view';
 import createSortList from './view/sort-list-view';
 import createFilms from './view/films-view';
 import createFilmsList  from './view/films-list-view';
-import {createFilmCardTemplate} from './view/film-card-view';
-import {showMoreBtnTemplate} from './view/show-more-view';
-import {topRatedTemplate} from './view/top-rated-view';
+import filmListContainer from './view/film-list-container-view';
+import createFilmCard from './view/film-card-view';
+import showMoreBtn from './view/show-more-view';
+import TopRated from './view/top-rated-view';
 import {mostCommentedTemplate} from './view/most-commented-view';
 import {footerStatisticTemplate} from './view/footer-statistic-view';
 import {popUpContainerRenderTemplate} from './view/popup-view';
@@ -53,27 +54,31 @@ const createNavigationListComponent = new createNavigationListView();
 renderElement(siteMeinElement, createNavigationListComponent.element, RenderPosition.BEFOREEND);
 const filmsComponents = new createFilms();
 const filmsListComponents = new createFilmsList();
+const filmsListContainer = new filmListContainer();
 renderElement(createNavigationListComponent.element, new createNavigationItemsView(filterDate).element, RenderPosition.BEFOREEND);
 renderElement(createNavigationListComponent.element, new createNavigationItemStat().element, RenderPosition.BEFOREEND);
 renderElement(siteMeinElement, new createSortList().element, RenderPosition.BEFOREEND);
 renderElement(siteMeinElement, filmsComponents.element, RenderPosition.BEFOREEND);
 renderElement(filmsComponents.element, filmsListComponents.element, RenderPosition.BEFOREEND);
-const filmsListContainer  = siteMeinElement.querySelector('.films-list__container');
+renderElement(filmsListComponents.element, filmsListContainer.element, RenderPosition.BEFOREEND);
+
 const siteFilmsContainer = siteMeinElement.querySelector('.films');
 for(let i = 0; i < Math.min(movie.length, MOVIE_COUNT_PER_STEP); i++) {
-  renderTemplate(filmsListComponents.element, createFilmCardTemplate(movie[i]), RenderPosition.BEFOREEND);
+  renderElement(filmsListContainer.element, new createFilmCard(movie[i]).element, RenderPosition.BEFOREEND);
 }
 // const siteFilmList = siteFilmsContainer.querySelector('.films-list');
+const loadMoreButtonComponents = new showMoreBtn();
 if(movie.length > MOVIE_COUNT_PER_STEP) {
   let renderedMovieCount = MOVIE_COUNT_PER_STEP;
-  renderTemplate(filmsListComponents.element, showMoreBtnTemplate(), RenderPosition.BEFOREEND);
-  const loadMoreButton = filmsListComponents.element.querySelector('.films-list__show-more');
+  renderElement(filmsListComponents.element, loadMoreButtonComponents.element, RenderPosition.BEFOREEND);
+  const loadMoreButton = document.querySelector('.films-list__show-more');
+
 
   loadMoreButton.addEventListener('click', (evt) => {
     evt.preventDefault();
     movie
       .slice(renderedMovieCount, renderedMovieCount + MOVIE_COUNT_PER_STEP)
-      .forEach((movieItem) => renderTemplate(filmsListContainer, createFilmCardTemplate(movieItem), RenderPosition.BEFOREEND));
+      .forEach((movieItem) => renderElement(filmsListContainer.element, new createFilmCard(movieItem).element, RenderPosition.BEFOREEND));
     renderedMovieCount += MOVIE_COUNT_PER_STEP;
     if(renderedMovieCount >= movie.length) {
       loadMoreButton.remove();
@@ -81,14 +86,14 @@ if(movie.length > MOVIE_COUNT_PER_STEP) {
   });
 }
 
-renderTemplate(siteFilmsContainer, topRatedTemplate(), RenderPosition.BEFOREEND);
+renderTemplate(siteFilmsContainer, new TopRated().element, RenderPosition.BEFOREEND);
 renderTemplate(siteFilmsContainer, mostCommentedTemplate(), RenderPosition.BEFOREEND);
 const filmsListExtra = siteFilmsContainer.querySelectorAll('.films-list--extra');
 
 for(const element of filmsListExtra ) {
   const extraContainer = element.querySelector('.films-list__container');
   for(let i = 0; i < countExtra; i++) {
-    renderTemplate(extraContainer, createFilmCardTemplate(movie[i]), RenderPosition.BEFOREEND);
+    renderElement(extraContainer, new createFilmCard(movie[i]).element, RenderPosition.BEFOREEND);
   }
 }
 const footer = document.querySelector('.footer');
