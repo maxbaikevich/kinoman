@@ -85,7 +85,6 @@ if(movie.length > MOVIE_COUNT_PER_STEP) {
     }
   });
 }
-
 renderTemplate(siteFilmsContainer, new TopRated().element, RenderPosition.BEFOREEND);
 renderTemplate(siteFilmsContainer, mostCommentedTemplate(), RenderPosition.BEFOREEND);
 const filmsListExtra = siteFilmsContainer.querySelectorAll('.films-list--extra');
